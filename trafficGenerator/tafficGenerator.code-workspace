@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"GOPATH": "/Users/caoyuhua/Applications/Go:/Users/caoyuhua/OneDrive",
+		"GOROOT": "/usr/local/Cellar/go/1.13.3/libexec"
+	}
+}
