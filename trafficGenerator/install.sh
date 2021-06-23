@@ -3,6 +3,7 @@
 dir=$(pwd)
 export GOOS=linux
 export GOBIN="$dir/bin"
+export GOPATH="/home/onos"
 #export GOPATH="$GOPATH:$dir"
 #export GOPATH="/home/onos/netScript"
 echo"GOBIN: $GOBIN"

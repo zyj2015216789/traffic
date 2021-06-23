@@ -13,6 +13,7 @@ import (
 
 var (
 	zeroDuration = ParseDuration("0s")
+	nonZeroDuration = ParseDuration("1s")
 	Random       = rand.New(rand.NewSource(time.Now().UnixNano()))
 )
 
@@ -70,11 +71,15 @@ func NewBackGroundTraffic(name, nic string, rate int, ipListStr []string,
 func (bgf *BackGroundTraffic) RandomTraffic() Traffic {
 
 	flowType := Random.Intn(100)
-	if flowType >= 95 {
+	if flowType > 100 {
+		// attack
 		return bgf.elephant()
 	} else {
+		// normal
 		return bgf.mice()
 	}
+	
+	
 }
 
 // elephant traffic 512KB/s ~ 1024KB/s
@@ -83,7 +88,8 @@ func (bgf *BackGroundTraffic) elephant() Traffic {
 	srcPort := bgf.portMin + uint16(Random.Int31()%bgf.ports)
 	dstPort := bgf.portMin + uint16(Random.Int31()%bgf.ports)
 	pkts := (10 + Random.Intn(10)) * 1024
-	rate := 512 + Random.Intn(512)
+	rate := 1
+	
 	return NewTraffic(fmt.Sprintf("%s-elephant", bgf.Name),
 		bgf.HostIP, bgf.ipList[ipIndex],
 		srcPort, dstPort,
@@ -95,8 +101,8 @@ func (bgf *BackGroundTraffic) mice() Traffic {
 	ipIndex := Random.Int() % len(bgf.ipList)
 	srcPort := bgf.portMin + uint16(Random.Int31()%bgf.ports)
 	dstPort := bgf.portMin + uint16(Random.Int31()%bgf.ports)
-	pkts := 1 + Random.Intn(100)
-	rate := 50 + Random.Intn(50)
+	pkts := 10 + Random.Intn(100)
+	rate := 1 + Random.Intn(10)
 	return NewTraffic(fmt.Sprintf("%s-mice", bgf.Name),
 		bgf.HostIP, bgf.ipList[ipIndex],
 		srcPort, dstPort,
@@ -122,7 +128,7 @@ func (bgf *BackGroundTraffic) Start() {
 		traffic.SrcIP = hostIP
 
 		go traffic.Launch()
-
+		time.Sleep(500000000)
 		if bgf.duration > 0 && time.Since(start) > bgf.duration {
 			log.Printf("traffic time done! %+v\n", bgf.duration)
 			bgf.Running = false
