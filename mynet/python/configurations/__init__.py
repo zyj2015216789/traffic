@@ -1,0 +1,12 @@
+# -*- coding: utf-8 -*-
+
+FLOW_TIMEOUT = "30s"
+
+# 测量流量
+MEASURE_PORT = 6667
+MEASURE_PKTS = 1000
+MEASURE_RATE = 100
+
+# 背景流量随机目的端口
+RANDOM_MAX = 7668
+RANDOM_MIN = 6668
